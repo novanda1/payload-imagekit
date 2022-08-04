@@ -1,16 +1,22 @@
+import { Config } from "payload/config";
+import { CollectionConfig } from "payload/types";
+import {
+  BeforeChangeHook,
+  AfterDeleteHook,
+} from "payload/dist/collections/config/types";
 import Service, { TImageKitConfig } from "./service";
 
 const plugin =
   (imagekitConfig: TImageKitConfig) =>
-  (incomingConfig: any): any => {
+  (incomingConfig: Config): Config => {
     const { collections: incomingCollections } = incomingConfig;
 
-    const collections: [] =
-      incomingCollections?.map((incomingCollection: any) => {
+    const collections: CollectionConfig[] =
+      incomingCollections?.map((incomingCollection) => {
         if (!incomingCollection.upload) return incomingCollection;
 
         const service = new Service(imagekitConfig);
-        const uploadBeforeChange: any = async (args: any) => {
+        const uploadBeforeChange: BeforeChangeHook = async (args) => {
           const file = args.req.files?.file;
           if (file) {
             const uploadResponse = await service.upload(file);
@@ -25,17 +31,17 @@ const plugin =
           }
         };
 
-        const deleteAfterDelete: any = async (args: any) => {
+        const deleteAfterDelete: AfterDeleteHook = async (args) => {
           await service.delete(args.doc.fileId);
         };
 
         const incomingHooks = incomingCollection.hooks;
 
-        const beforeChange: any[] = incomingHooks?.beforeChange
+        const beforeChange: BeforeChangeHook[] = incomingHooks?.beforeChange
           ? [...incomingHooks.beforeChange, uploadBeforeChange]
           : [uploadBeforeChange];
 
-        const afterDelete: any[] = incomingHooks?.afterDelete
+        const afterDelete: AfterDeleteHook[] = incomingHooks?.afterDelete
           ? [...incomingHooks.afterDelete, deleteAfterDelete]
           : [deleteAfterDelete];
 
@@ -45,7 +51,7 @@ const plugin =
         };
       }) || [];
 
-    const config: any = { ...incomingConfig, collections };
+    const config: Config = { ...incomingConfig, collections };
     return config;
   };
 
