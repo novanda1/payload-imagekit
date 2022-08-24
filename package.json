@@ -1,16 +1,14 @@
 {
-  "name": "payload-imagekit",
+  "name": "payloadcms-plugin-imagekit",
+  "description": "Payload CMS plugin ImageKit",
   "version": "0.1.0",
-  "description": "PayloadCMS plugin ImageKit",
   "main": "index.js",
   "author": "Novanda Ahsan <novandaahsan1@gmail.com>",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "tsc",
-    "preversion": "npm run build",
-    "postversion": "git push --follow-tags"
+    "build": "tsc"
   },
   "files": [
     "dist",
