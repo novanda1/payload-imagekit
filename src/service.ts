@@ -8,7 +8,7 @@ export type TImageKitConfig = {
   endpoint: string;
 };
 
-export type TUploadOption = Omit<UploadOptions, "file">;
+export type TUploadOption = Partial<Omit<UploadOptions, "file">>;
 
 class Service {
   private config: TImageKitConfig = {

@@ -8,7 +8,7 @@ import Service, { TImageKitConfig, TUploadOption } from "./service";
 
 type TPluginOption = {
   config: TImageKitConfig;
-  uploadOption: TUploadOption;
+  uploadOption?: TUploadOption;
 };
 
 const plugin =
