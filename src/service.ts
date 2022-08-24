@@ -8,6 +8,8 @@ export type TImageKitConfig = {
   endpoint: string;
 };
 
+export type TUploadOption = Omit<UploadOptions, "file">;
+
 class Service {
   private config: TImageKitConfig = {
     endpoint: "",
@@ -27,11 +29,11 @@ class Service {
 
   async upload(
     file: UploadedFile,
-    options?: UploadOptions
+    options?: TUploadOption
   ): Promise<UploadResponse & {}> {
     return await this.imagekit.upload({
       ...options,
-      file: options?.file || file.data,
+      file: file.data,
       fileName: options?.fileName || file.name,
       extensions: options?.extensions || [
         {
