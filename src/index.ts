@@ -14,28 +14,28 @@ const plugin =
       (existingCollection): CollectionConfig => {
         const options = allCollectionOptions[existingCollection.slug];
 
-        const incomingFields: Field[] = [...existingCollection.fields];
-        if (options?.savedAttributes)
-          incomingFields.push({
-            name: options.groupName || "imagekit",
-            type: "group",
-            fields: getFields(options.savedAttributes),
-            admin: { disabled: true },
-          });
-
-        const incomingHooks = {
-          ...(existingCollection?.hooks || {}),
-          beforeChange: [
-            ...(existingCollection.hooks?.beforeChange || []),
-            getBeforeChangeHooks(imagekitConfig.config, options.uploadOption),
-          ],
-          afterDelete: [
-            ...(existingCollection.hooks?.afterDelete || []),
-            getAfterDeleteHooks(imagekitConfig.config),
-          ],
-        };
-
         if (options) {
+          const incomingFields: Field[] = [...existingCollection.fields];
+          if (options?.savedAttributes)
+            incomingFields.push({
+              name: options.groupName || "imagekit",
+              type: "group",
+              fields: getFields(options.savedAttributes),
+              admin: { disabled: true },
+            });
+
+          const incomingHooks = {
+            ...(existingCollection?.hooks || {}),
+            beforeChange: [
+              ...(existingCollection.hooks?.beforeChange || []),
+              getBeforeChangeHooks(imagekitConfig.config, options.uploadOption),
+            ],
+            afterDelete: [
+              ...(existingCollection.hooks?.afterDelete || []),
+              getAfterDeleteHooks(imagekitConfig.config),
+            ],
+          };
+
           return {
             ...existingCollection,
             fields: incomingFields,

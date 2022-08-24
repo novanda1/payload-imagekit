@@ -14,17 +14,17 @@ class Service {
     this.config = config;
   }
 
-  private imagekit: ImageKit = new ImageKit({
-    privateKey: this.config.privateKey,
-    publicKey: this.config.publicKey,
-    urlEndpoint: this.config.endpoint,
-  });
-
-  async upload(
+  public async upload(
     file: UploadedFile,
     options?: TUploadOption
   ): Promise<UploadResponse & {}> {
-    return await this.imagekit.upload({
+    const imagekit = new ImageKit({
+      privateKey: this.config.privateKey,
+      publicKey: this.config.publicKey,
+      urlEndpoint: this.config.endpoint,
+    });
+
+    return await imagekit.upload({
       ...options,
       file: file.data,
       fileName: options?.fileName || file.name,
@@ -39,8 +39,14 @@ class Service {
   }
 
   async delete(fileId: string): Promise<boolean> {
+    const imagekit = new ImageKit({
+      privateKey: this.config.privateKey,
+      publicKey: this.config.publicKey,
+      urlEndpoint: this.config.endpoint,
+    });
+
     try {
-      await this.imagekit.deleteFile(fileId);
+      await imagekit.deleteFile(fileId);
       return true;
     } catch (error) {
       throw error;
