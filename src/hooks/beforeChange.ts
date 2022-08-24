@@ -1,10 +1,16 @@
 import { BeforeChangeHook } from "payload/dist/collections/config/types";
 import Service from "../service";
-import { TImageKitConfig, TUploadOption } from "../types";
+import {
+  TImageKitAttribute,
+  TImageKitAttributes,
+  TImageKitConfig,
+  TUploadOption,
+} from "../types";
 
 export const getBeforeChangeHooks = (
   config: TImageKitConfig,
-  options?: TUploadOption
+  options?: TUploadOption,
+  savedAttributes: TImageKitAttributes = ["url", "thumbnailUrl"]
 ) => {
   const service = new Service(config);
   const uploadBeforeChange: BeforeChangeHook = async (args) => {
@@ -12,12 +18,14 @@ export const getBeforeChangeHooks = (
     if (file) {
       const uploadResponse = await service.upload(file, options);
 
+      const saved: any = {};
+      Object.keys(savedAttributes).forEach((key) => {
+        saved[key] = uploadResponse[key as TImageKitAttribute];
+      });
+
       return {
         ...args.data,
-        filename: uploadResponse.name,
-        fileId: uploadResponse.fileId,
-        imageUrl: uploadResponse.url,
-        thumbnailUrl: uploadResponse.thumbnailUrl,
+        ...saved,
       };
     }
   };

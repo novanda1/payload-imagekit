@@ -17,7 +17,7 @@ const imagekitField = (name: keyof UploadResponse): Field => {
   return field as Field;
 };
 
-export const getFields = (savedAttributes: TImageKitAttributes): Field[] => {
+export const getFields = (savedAttributes?: TImageKitAttributes): Field[] => {
   const defaultSavedFields: TImageKitAttributes = ["url", "thumbnailUrl"];
   return (savedAttributes || defaultSavedFields)?.map((name) => {
     return imagekitField(name);
