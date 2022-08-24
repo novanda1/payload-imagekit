@@ -1,14 +1,7 @@
 import { UploadedFile } from "express-fileupload";
 import ImageKit from "imagekit";
-import { UploadOptions, UploadResponse } from "imagekit/dist/libs/interfaces";
-
-export type TImageKitConfig = {
-  publicKey: string;
-  privateKey: string;
-  endpoint: string;
-};
-
-export type TUploadOption = Partial<Omit<UploadOptions, "file">>;
+import { UploadResponse } from "imagekit/dist/libs/interfaces";
+import { TImageKitConfig, TUploadOption } from "./types";
 
 class Service {
   private config: TImageKitConfig = {

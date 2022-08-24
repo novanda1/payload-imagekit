@@ -1,65 +1,56 @@
 import { Config } from "payload/config";
-import {
-  AfterDeleteHook,
-  BeforeChangeHook,
-} from "payload/dist/collections/config/types";
-import { CollectionConfig } from "payload/types";
-import Service, { TImageKitConfig, TUploadOption } from "./service";
-
-type TPluginOption = {
-  config: TImageKitConfig;
-  uploadOption?: TUploadOption;
-};
+import { CollectionConfig, Field } from "payload/types";
+import { getFields } from "./fields";
+import { getAfterDeleteHooks } from "./hooks/afterDelete";
+import { getBeforeChangeHooks } from "./hooks/beforeChange";
+import { TPluginOption } from "./types";
 
 const plugin =
   (imagekitConfig: TPluginOption) =>
   (incomingConfig: Config): Config => {
-    const { collections: incomingCollections } = incomingConfig;
+    const { collections: allCollectionOptions } = imagekitConfig;
 
-    const collections: CollectionConfig[] =
-      incomingCollections?.map((incomingCollection) => {
-        if (!incomingCollection.upload) return incomingCollection;
+    const collections = (incomingConfig.collections || []).map(
+      (existingCollection): CollectionConfig => {
+        const options = allCollectionOptions[existingCollection.slug];
 
-        const service = new Service(imagekitConfig.config);
-        const uploadBeforeChange: BeforeChangeHook = async (args) => {
-          const file = args.req.files?.file;
-          if (file) {
-            const uploadResponse = await service.upload(
-              file,
-              imagekitConfig.uploadOption
-            );
+        const incomingFields: Field[] = [...existingCollection.fields];
+        if (options?.savedAttributes)
+          incomingFields.push({
+            name: options.groupName || "imagekit",
+            type: "group",
+            fields: getFields(options.savedAttributes),
+            admin: { disabled: true },
+          });
 
-            return {
-              ...args.data,
-              filename: uploadResponse.name,
-              fileId: uploadResponse.fileId,
-              imageUrl: uploadResponse.url,
-              thumbnailUrl: uploadResponse.thumbnailUrl,
-            };
-          }
+        const incomingHooks = {
+          ...(existingCollection?.hooks || {}),
+          beforeChange: [
+            ...(existingCollection.hooks?.beforeChange || []),
+            getBeforeChangeHooks(imagekitConfig.config, options.uploadOption),
+          ],
+          afterDelete: [
+            ...(existingCollection.hooks?.afterDelete || []),
+            getAfterDeleteHooks(imagekitConfig.config),
+          ],
         };
 
-        const deleteAfterDelete: AfterDeleteHook = async (args) => {
-          await service.delete(args.doc.fileId);
-        };
+        if (options) {
+          return {
+            ...existingCollection,
+            fields: incomingFields,
+            hooks: incomingHooks,
+          };
+        }
 
-        const incomingHooks = incomingCollection.hooks;
+        return existingCollection;
+      }
+    );
 
-        const beforeChange: BeforeChangeHook[] = incomingHooks?.beforeChange
-          ? [...incomingHooks.beforeChange, uploadBeforeChange]
-          : [uploadBeforeChange];
-
-        const afterDelete: AfterDeleteHook[] = incomingHooks?.afterDelete
-          ? [...incomingHooks.afterDelete, deleteAfterDelete]
-          : [deleteAfterDelete];
-
-        return {
-          ...incomingCollection,
-          hooks: { ...incomingCollection.hooks, beforeChange, afterDelete },
-        };
-      }) || [];
-
-    const config: Config = { ...incomingConfig, collections };
+    const config: Config = {
+      ...incomingConfig,
+      collections,
+    };
     return config;
   };
 
