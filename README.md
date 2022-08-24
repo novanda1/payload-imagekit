@@ -2,9 +2,13 @@
 
 This plugin sync your image to ImageKit.
 
-## Get Started
+#### Requirements
 
-### Enable plugin in Payload CMS config
+- Payload version `1.0.19` or higher is required
+
+## Usage
+
+Install this plugin within your Payload as follows:
 
 ```js
 import { buildConfig } from "payload/config";
@@ -15,11 +19,20 @@ export default buildConfig({
   plugins: [
     imagekitPlugin({
       config: {
-        publicKey: "your public key",
-        endpoint: "your endpoint",
-        privateKey: "your private key",
+        publicKey: "your_public_api_key",
+        privateKey: "your_private_api_key",
+        urlEndpoint: "https://ik.imagekit.io/your_imagekit_id/",
       },
     }),
   ],
 });
 ```
+
+## Plugin options
+
+This plugin have 1 parameter that contain an object.
+
+| Option                    | Description                            |
+| ------------------------- | -------------------------------------- |
+| `config` (required)       | ImageKit Config `ImageKitOptions `     |
+| `uploadOption` (optional) | ImageKit Upload Option `UploadOptions` |
