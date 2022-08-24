@@ -15,13 +15,15 @@ const plugin =
         const options = allCollectionOptions[existingCollection.slug];
 
         if (options) {
-          const incomingFields: Field[] = [...existingCollection.fields];
-          incomingFields.push({
-            name: options.groupName || "imagekit",
-            type: "group",
-            fields: getFields(options?.savedAttributes),
-            admin: { disabled: true },
-          });
+          const incomingFields: Field[] = [
+            ...existingCollection.fields,
+            {
+              name: options.groupName || "imagekit",
+              type: "group",
+              fields: getFields(options?.savedAttributes),
+              admin: { readOnly: true },
+            },
+          ];
 
           const incomingHooks = {
             ...(existingCollection?.hooks || {}),
