@@ -79,3 +79,7 @@ Or if you leave it empty the default value would be `[ "fileId", "thumbnailUrl" 
 type: `object`
 
 All [ImageKit upload options](https://docs.imagekit.io/api-reference/upload-file-api/server-side-file-upload#request-structure-multipart-form-data) except `fileId`.
+
+## Screenshot
+
+![image](https://user-images.githubusercontent.com/57532279/186620627-95fc5a94-8456-40d6-bcf7-2e7034cd3abc.png)
