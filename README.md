@@ -5,6 +5,10 @@ This plugin sync your image to ImageKit.
 #### Requirements
 
 - Payload version `1.0.19` or higher is required
+- ImageKit
+
+## Installation
+`npm i payloadcms-plugin-imagekit`
 
 ## Usage
 
@@ -45,6 +49,14 @@ This plugin have 1 parameter that contain an object.
 | `collections` (optional) | Collections options                |
 
 ### Colections options
+
+An object than contain all collection.  
+The `key` is a collection name that need to save the images to ImageKit.  
+The `value` is a `CollectionOption`
+
+default value `media: {}`
+
+### `CollectionOption`
 
 #### `disableLocalStorage`
 type: `boolean`
