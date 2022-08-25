@@ -1,6 +1,9 @@
 import { UploadResponse, UploadOptions } from "imagekit/dist/libs/interfaces";
 
-export type TImageKitAttribute = keyof UploadResponse;
+export type TImageKitAttribute = keyof Omit<
+  Omit<UploadResponse, "thumbnailUrl">,
+  "fileId"
+>;
 export type TImageKitAttributes = TImageKitAttribute[];
 
 export type TPluginOption = {

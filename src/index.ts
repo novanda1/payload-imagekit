@@ -2,7 +2,7 @@ import { UploadResponse } from "imagekit/dist/libs/interfaces";
 import { Config, Plugin } from "payload/config";
 import { CollectionConfig, Field } from "payload/types";
 import { GROUP_NAME } from "./constants";
-import { getFields } from "./fields";
+import { getFields, requiredFields } from "./fields";
 import { getAfterDeleteHooks } from "./hooks/afterDelete";
 import { getBeforeChangeHooks } from "./hooks/beforeChange";
 import { TPluginOption } from "./types";
@@ -22,7 +22,10 @@ const plugin =
             {
               name: GROUP_NAME,
               type: "group",
-              fields: getFields(options?.savedAttributes),
+              fields: [
+                ...requiredFields,
+                ...getFields(options?.savedAttributes),
+              ],
               admin: { readOnly: true },
             },
           ];
@@ -31,11 +34,7 @@ const plugin =
             ...(existingCollection?.hooks || {}),
             beforeChange: [
               ...(existingCollection.hooks?.beforeChange || []),
-              getBeforeChangeHooks(
-                imagekitConfig.config,
-                options.uploadOption,
-                options.savedAttributes
-              ),
+              getBeforeChangeHooks(imagekitConfig.config, options.uploadOption),
             ],
             afterDelete: [
               ...(existingCollection.hooks?.afterDelete || []),
@@ -50,7 +49,6 @@ const plugin =
                 ? existingCollection.upload
                 : {}),
               adminThumbnail: ({ doc }) => {
-                console.log({ doc });
                 return (
                   (doc[GROUP_NAME] as Partial<UploadResponse>)?.thumbnailUrl ||
                   ""

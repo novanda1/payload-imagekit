@@ -1,16 +1,11 @@
 import { BeforeChangeHook } from "payload/dist/collections/config/types";
-import { DEFAULT_FIELDS, GROUP_NAME } from "../constants";
+import { GROUP_NAME } from "../constants";
 import Service from "../service";
-import {
-  TImageKitAttributes,
-  TImageKitConfig,
-  TUploadOption
-} from "../types";
+import { TImageKitConfig, TUploadOption } from "../types";
 
 export const getBeforeChangeHooks = (
   config: TImageKitConfig,
-  options?: TUploadOption,
-  savedAttributes: TImageKitAttributes = DEFAULT_FIELDS
+  options?: TUploadOption
 ) => {
   const service = new Service(config);
   const uploadBeforeChange: BeforeChangeHook = async (args) => {
