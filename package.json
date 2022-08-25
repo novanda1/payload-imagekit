@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "files": [
     "dist",

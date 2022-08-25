@@ -1,12 +1,14 @@
-import { Config } from "payload/config";
+import { UploadResponse } from "imagekit/dist/libs/interfaces";
+import { Config, Plugin } from "payload/config";
 import { CollectionConfig, Field } from "payload/types";
+import { GROUP_NAME } from "./constants";
 import { getFields } from "./fields";
 import { getAfterDeleteHooks } from "./hooks/afterDelete";
 import { getBeforeChangeHooks } from "./hooks/beforeChange";
 import { TPluginOption } from "./types";
 
 const plugin =
-  (imagekitConfig: TPluginOption) =>
+  (imagekitConfig: TPluginOption): Plugin =>
   (incomingConfig: Config): Config => {
     const { collections: allCollectionOptions } = imagekitConfig;
 
@@ -18,7 +20,7 @@ const plugin =
           const incomingFields: Field[] = [
             ...existingCollection.fields,
             {
-              name: options.groupName || "imagekit",
+              name: GROUP_NAME,
               type: "group",
               fields: getFields(options?.savedAttributes),
               admin: { readOnly: true },
@@ -43,6 +45,22 @@ const plugin =
 
           return {
             ...existingCollection,
+            upload: {
+              ...(typeof existingCollection.upload === "object"
+                ? existingCollection.upload
+                : {}),
+              adminThumbnail: ({ doc }) => {
+                console.log({ doc });
+                return (
+                  (doc[GROUP_NAME] as Partial<UploadResponse>)?.thumbnailUrl ||
+                  ""
+                );
+              },
+              disableLocalStorage:
+                typeof options.disableLocalStorage === "boolean"
+                  ? options.disableLocalStorage
+                  : true,
+            },
             fields: incomingFields,
             hooks: incomingHooks,
           };

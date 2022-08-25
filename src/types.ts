@@ -9,7 +9,7 @@ export type TPluginOption = {
     [slug: string]: {
       uploadOption?: TUploadOption;
       savedAttributes?: TImageKitAttributes;
-      groupName?: string;
+      disableLocalStorage?: boolean;
     };
   };
 };
