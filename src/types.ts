@@ -1,20 +1,24 @@
 import { UploadResponse, UploadOptions } from "imagekit/dist/libs/interfaces";
 
-export type TImageKitAttribute = keyof Omit<
+export type TImageKitProperty = keyof Omit<
   Omit<UploadResponse, "thumbnailUrl">,
   "fileId"
 >;
-export type TImageKitAttributes = TImageKitAttribute[];
+export type TImageKitProperties = TImageKitProperty[];
+
+export type CollectionOptions = {
+  uploadOption?: TUploadOption;
+  savedProperties?: TImageKitProperties;
+  disableLocalStorage?: boolean;
+};
+
+export type CollectionsOptions = {
+  [slug: string]: CollectionOptions;
+}
 
 export type TPluginOption = {
   config: TImageKitConfig;
-  collections: {
-    [slug: string]: {
-      uploadOption?: TUploadOption;
-      savedAttributes?: TImageKitAttributes;
-      disableLocalStorage?: boolean;
-    };
-  };
+  collections?: CollectionsOptions;
 };
 
 export type TImageKitConfig = {

@@ -1,7 +1,7 @@
 import { UploadResponse } from "imagekit/dist/libs/interfaces";
 import { Field } from "payload/types";
 import { DEFAULT_FIELDS, REQUIRED_FIELDS } from "./constants";
-import { TImageKitAttributes } from "./types";
+import { TImageKitProperties } from "./types";
 
 const imagekitField = (name: keyof UploadResponse): Field => {
   const numberField = ["height", "width", "size"];
@@ -18,8 +18,8 @@ const imagekitField = (name: keyof UploadResponse): Field => {
   return field as Field;
 };
 
-export const getFields = (savedAttributes?: TImageKitAttributes): Field[] => {
-  return (savedAttributes || DEFAULT_FIELDS)?.map((name) => {
+export const getFields = (savedProperties?: TImageKitProperties): Field[] => {
+  return (savedProperties || DEFAULT_FIELDS)?.map((name) => {
     return imagekitField(name);
   });
 };

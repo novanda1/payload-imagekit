@@ -32,7 +32,7 @@ export default buildConfig({
 
 This plugin have 1 parameter that contain an object.
 
-| Option                    | Description                            |
-| ------------------------- | -------------------------------------- |
-| `config` (required)       | ImageKit Config `ImageKitOptions `     |
-| `uploadOption` (optional) | ImageKit Upload Option `UploadOptions` |
+| Option                   | Description                        |
+| ------------------------ | ---------------------------------- |
+| `config` (required)      | ImageKit Config `ImageKitOptions ` |
+| `collections` (optional) | Collections specific config        |

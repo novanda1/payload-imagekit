@@ -5,16 +5,18 @@ import { GROUP_NAME } from "./constants";
 import { getFields, requiredFields } from "./fields";
 import { getAfterDeleteHooks } from "./hooks/afterDelete";
 import { getBeforeChangeHooks } from "./hooks/beforeChange";
-import { TPluginOption } from "./types";
+import { CollectionsOptions, TPluginOption } from "./types";
 
 const plugin =
   (imagekitConfig: TPluginOption): Plugin =>
   (incomingConfig: Config): Config => {
     const { collections: allCollectionOptions } = imagekitConfig;
+    if (!allCollectionOptions)
+      (allCollectionOptions as unknown as CollectionsOptions).media = {}; // default value
 
     const collections = (incomingConfig.collections || []).map(
       (existingCollection): CollectionConfig => {
-        const options = allCollectionOptions[existingCollection.slug];
+        const options = allCollectionOptions![existingCollection.slug];
 
         if (options) {
           const incomingFields: Field[] = [
@@ -24,7 +26,7 @@ const plugin =
               type: "group",
               fields: [
                 ...requiredFields,
-                ...getFields(options?.savedAttributes),
+                ...getFields(options?.savedProperties),
               ],
               admin: { readOnly: true },
             },
