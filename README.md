@@ -78,7 +78,7 @@ Or if you leave it empty the default value would be `[ "fileId", "thumbnailUrl" 
 #### `uploadOption`
 type: `object`
 
-All [ImageKit upload options](https://docs.imagekit.io/api-reference/upload-file-api/server-side-file-upload#request-structure-multipart-form-data) except `fileId`.
+All [ImageKit upload options](https://docs.imagekit.io/api-reference/upload-file-api/server-side-file-upload#request-structure-multipart-form-data) except `file`.
 
 ## Screenshot
 
