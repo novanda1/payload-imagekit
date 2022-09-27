@@ -62,23 +62,23 @@ Type `object`
 - [key] (required)  
   type: `string`  
   description: Object keys should be PayloadCMS collection name that store the media/image.  
-  value type: `object`
-  value options: 
+  value type: `object`  
+  value options:  
   
   - uploadOption (optional)  
-    type: `object`
+    type: `object`  
     type detail: [TUploadOption](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data). Except `file`.  
     description: An options to saved in ImageKit.
 
   - savedProperties (optional)  
-    type: `[]string`
+    type: `[]string`  
     type detail: [TImageKitProperties](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#understanding-response). Except `thumbnailUrl` and `fileId`.  
     description: An object that saved to PayloadCMS/Database that you may need it for your Frontend. 
 
-  - disableLocalStorage (optional)
-    type: `boolean`
-    default: `true`
-    description: Completely disable uploading files to disk locally. [More](https://payloadcms.com/docs/upload/overview#disabling-local-upload-storage)
+  - disableLocalStorage (optional)  
+    type: `boolean`  
+    default: `true`  
+    description: Completely disable uploading files to disk locally. [More](https://payloadcms.com/docs/upload/overview#disabling-local-upload-storage)  
 
   ## Screenshot
 
