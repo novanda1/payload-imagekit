@@ -8,7 +8,8 @@ This plugin sync your image to ImageKit.
 - ImageKit
 
 ## Installation
-`npm i payloadcms-plugin-imagekit`
+`npm install imagekit`  
+`npm install payloadcms-plugin-imagekit`
 
 ## Usage
 
