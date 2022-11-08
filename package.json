@@ -1,7 +1,7 @@
 {
   "name": "payloadcms-plugin-imagekit",
   "description": "Payload CMS plugin ImageKit",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Novanda Ahsan <novandaahsan1@gmail.com>",
