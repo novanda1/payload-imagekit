@@ -28,13 +28,6 @@ class Service {
       ...options,
       file: file.data,
       fileName: options?.fileName || file.name,
-      extensions: options?.extensions || [
-        {
-          name: "google-auto-tagging",
-          maxTags: 5,
-          minConfidence: 95,
-        },
-      ],
     });
   }
 
