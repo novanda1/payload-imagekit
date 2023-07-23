@@ -1,5 +1,5 @@
 import { UploadResponse } from "imagekit/dist/libs/interfaces";
-import { Field } from "payload/types";
+import { ArrayField, Field } from "payload/types";
 import { DEFAULT_FIELDS, REQUIRED_FIELDS } from "./constants";
 import { TImageKitProperties } from "./types";
 

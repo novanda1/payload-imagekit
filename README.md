@@ -2,14 +2,9 @@
 
 This plugin sync your image to ImageKit.
 
-#### Requirements
-
-- Payload version `1.0.19` or higher is required
-- ImageKit
-
 ## Installation
+
 ```sh
-npm install imagekit
 npm install payloadcms-plugin-imagekit
 ```
 
@@ -28,12 +23,25 @@ export default buildConfig({
       config: {
         publicKey: "your_public_api_key",
         privateKey: "your_private_api_key",
-        urlEndpoint: "https://ik.imagekit.io/your_imagekit_id/",
+        urlEndpoint:
+          "https://ik.imagekit.io/your_imagekit_id/",
       },
       collections: {
         media: {
           uploadOption: {
             folder: "some folder",
+            extensions: [
+              {
+                name: "aws-auto-tagging",
+                minConfidence: 80, // only tags with a confidence value higher than 80% will be attached
+                maxTags: 10, // a maximum of 10 tags from aws will be attached
+              },
+              {
+                name: "google-auto-tagging",
+                minConfidence: 70, // only tags with a confidence value higher than 70% will be attached
+                maxTags: 10, // a maximum of 10 tags from google will be attached
+              },
+            ],
           },
           savedProperties: ["url", "AITags"],
         },
@@ -52,22 +60,24 @@ This plugin have 1 parameter that contain an object.
 | `config` (required)      | ImageKit Config `ImageKitOptions ` |
 | `collections` (optional) | Collections options                |
 
-### config 
-Type `object` 
+### config
 
-- publicKey: type `string` 
+Type `object`
+
+- publicKey: type `string`
 - privateKey: type `string`
 - endpoint: type `string`;
 
-### colections 
-Type `object`  
+### colections
+
+Type `object`
 
 - [key] (required)  
   type: `string`  
   description: Object keys should be PayloadCMS collection name that store the media/image.  
   value type: `object`  
-  value options:  
-  
+  value options:
+
   - uploadOption (optional)  
     type: `object`  
     type detail: [TUploadOption](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#request-structure-multipart-form-data). Except `file`.  
@@ -76,12 +86,12 @@ Type `object`
   - savedProperties (optional)  
     type: `[]string`  
     type detail: [TImageKitProperties](https://docs.imagekit.io/api-reference/upload-file-api/client-side-file-upload#understanding-response). Except `thumbnailUrl` and `fileId`.  
-    description: An object that saved to PayloadCMS/Database that you may need it for your Frontend. 
+    description: An object that saved to PayloadCMS/Database that you may need it for your Frontend.
 
   - disableLocalStorage (optional)  
     type: `boolean`  
     default: `true`  
-    description: Completely disable uploading files to disk locally. [More](https://payloadcms.com/docs/upload/overview#disabling-local-upload-storage)  
+    description: Completely disable uploading files to disk locally. [More](https://payloadcms.com/docs/upload/overview#disabling-local-upload-storage)
 
   ## Screenshot
 
