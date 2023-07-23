@@ -7,15 +7,20 @@ import { getAfterDeleteHooks } from "./hooks/afterDelete";
 import { getBeforeChangeHooks } from "./hooks/beforeChange";
 import { CollectionsOptions, TPluginOption } from "./types";
 
+type OurConfig =
+  | Omit<Config, "admin">
+  | any;
+type OurPlugin = (config: OurConfig) => Promise<OurConfig> | OurConfig;
+
 const plugin =
-  (imagekitConfig: TPluginOption): Plugin =>
-  (incomingConfig: Config): Config => {
+  (imagekitConfig: TPluginOption): OurPlugin =>
+  (incomingConfig: OurConfig): OurConfig => {
     const { collections: allCollectionOptions } = imagekitConfig;
     if (!allCollectionOptions)
       (allCollectionOptions as unknown as CollectionsOptions).media = {}; // default value
 
     const collections = (incomingConfig.collections || []).map(
-      (existingCollection): CollectionConfig => {
+      (existingCollection: CollectionConfig): CollectionConfig => {
         const options = allCollectionOptions![existingCollection.slug];
 
         if (options) {
@@ -70,7 +75,7 @@ const plugin =
       }
     );
 
-    const config: Config = {
+    const config: OurConfig = {
       ...incomingConfig,
       collections,
     };
