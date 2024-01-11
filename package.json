@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "author": "Novanda Ahsan <novandaahsan1@gmail.com>",
   "license": "MIT",
+  "repository": "github:novanda1/payload-imagekit",
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
