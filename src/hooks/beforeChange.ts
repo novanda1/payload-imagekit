@@ -23,33 +23,40 @@ export const getBeforeChangeHooks = (
     async (args) => {
       const file = args.req.files?.file;
       if (file) {
-        const uploadResponse =
-          await service.upload(file, options);
-        let AITags = "";
-        uploadResponse.AITags?.forEach(
-          (tag, index) => {
-            AITags += (tag as any)?.name;
-            const lastIndex =
-              index ===
-              (uploadResponse.AITags?.length ||
-                0) -
+        try {
+          const uploadResponse =
+            await service.upload(file, options);
+          let AITags = "";
+          uploadResponse.AITags?.forEach(
+            (tag, index) => {
+              AITags += (tag as any)?.name;
+              const lastIndex =
+                index ===
+                (uploadResponse.AITags?.length ||
+                  0) -
                 1;
 
-            if (!lastIndex) {
-              AITags += ",";
+              if (!lastIndex) {
+                AITags += ",";
+              }
             }
-          }
-        );
+          );
 
-        let savedProperties: ToSavedProperties = {
-          ...uploadResponse,
-          AITags,
-        };
+          let savedProperties: ToSavedProperties = {
+            ...uploadResponse,
+            AITags,
+          };
 
-        return {
-          ...args.data,
-          [GROUP_NAME]: savedProperties,
-        };
+          return {
+            ...args.data,
+            [GROUP_NAME]: savedProperties,
+          };
+        } catch (error) {
+          args.req.payload.logger.error(
+            `[plugin-imagekit]: There was an error while uploading the media with filename ${options?.fileName}:`,
+          )
+          args.req.payload.logger.error(error)
+        }
       }
     };
 
