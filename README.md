@@ -23,8 +23,7 @@ export default buildConfig({
       config: {
         publicKey: "your_public_api_key",
         privateKey: "your_private_api_key",
-        urlEndpoint:
-          "https://ik.imagekit.io/your_imagekit_id/",
+        endpoint: "https://ik.imagekit.io/your_imagekit_id/",
       },
       collections: {
         media: {
@@ -68,7 +67,7 @@ Type `object`
 - privateKey: type `string`
 - endpoint: type `string`;
 
-### colections
+### collections
 
 Type `object`
 
@@ -92,6 +91,21 @@ Type `object`
     type: `boolean`  
     default: `true`  
     description: Completely disable uploading files to disk locally. [More](https://payloadcms.com/docs/upload/overview#disabling-local-upload-storage)
+
+## Payload Cloud
+If your project is hosted using Payload Cloud - their default file storage solution will conflict with this plugin. You will need to disable file storage via the [Payload Cloud plugin](https://github.com/payloadcms/payload/tree/d0f7677d5ff2e0109fc348260d87e2606fdbd293/packages/plugin-cloud) like so:
+```js
+// ...
+plugins: [
+  payloadCloud({
+    storage: false, // Disable file storage
+  }),
+  imagekitPlugin({
+    // Your imagekit config here
+  }),
+],
+// ...
+```
 
   ## Screenshot
 
