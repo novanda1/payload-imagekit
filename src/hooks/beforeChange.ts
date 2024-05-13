@@ -18,14 +18,21 @@ export const getBeforeChangeHooks = (
   config: TImageKitConfig,
   options?: TUploadOption
 ) => {
+
   const service = new Service(config);
   const uploadBeforeChange: BeforeChangeHook =
     async (args) => {
       const file = args.req.files?.file;
+
+      const uploadOptions = {
+        ...(options || {}),
+        folder: typeof options?.folder === 'string' ? options.folder : options?.folder?.(args.req)
+      };
+
       if (file) {
         try {
           const uploadResponse =
-            await service.upload(file, options);
+            await service.upload(file, uploadOptions);
           let AITags = "";
           uploadResponse.AITags?.forEach(
             (tag, index) => {

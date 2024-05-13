@@ -1,4 +1,5 @@
 import { UploadResponse, UploadOptions } from "imagekit/dist/libs/interfaces";
+import { PayloadRequest } from "payload/types";
 
 export type TImageKitProperty = keyof Omit<
   Omit<UploadResponse, "thumbnailUrl">,
@@ -27,4 +28,4 @@ export type TImageKitConfig = {
   endpoint: string;
 };
 
-export type TUploadOption = Partial<Omit<UploadOptions, "file">>;
+export type TUploadOption = Partial<Omit<Omit<UploadOptions, "file">, 'folder'>> & { folder?: string | ((req: PayloadRequest) => string) };
