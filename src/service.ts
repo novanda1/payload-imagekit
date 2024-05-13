@@ -1,6 +1,6 @@
 import { UploadedFile } from "express-fileupload";
 import ImageKit from "imagekit";
-import { UploadResponse } from "imagekit/dist/libs/interfaces";
+import { UploadOptions, UploadResponse } from "imagekit/dist/libs/interfaces";
 import { TImageKitConfig, TUploadOption } from "./types";
 
 class Service {
@@ -24,8 +24,10 @@ class Service {
       urlEndpoint: this.config.endpoint,
     });
 
+    const imagekitUploadOptions = options as UploadOptions
+
     return await imagekit.upload({
-      ...options,
+      ...imagekitUploadOptions,
       file: file.data,
       fileName: options?.fileName || file.name,
     });
