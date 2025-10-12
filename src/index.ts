@@ -1,19 +1,15 @@
 import { UploadResponse } from "imagekit/dist/libs/interfaces";
-import { Config, Plugin } from "payload/config";
-import { CollectionConfig, Field } from "payload/types";
+import { Config, Plugin } from "payload";
+import { CollectionConfig, Field } from "payload";
 import { GROUP_NAME } from "./constants";
 import { getFields, requiredFields } from "./fields";
 import { getAfterDeleteHooks } from "./hooks/afterDelete";
 import { getBeforeChangeHooks } from "./hooks/beforeChange";
 import { CollectionsOptions, TPluginOption } from "./types";
 
-type OurConfig =
-  | Omit<Config, "admin">
-type OurPlugin = (config: OurConfig) => Promise<OurConfig> | OurConfig;
-
 const plugin =
-  (imagekitConfig: TPluginOption): OurPlugin =>
-    (incomingConfig: OurConfig): OurConfig => {
+  (imagekitConfig: TPluginOption): Plugin =>
+    (incomingConfig: Config): Config => {
       const { collections: allCollectionOptions } = imagekitConfig;
       if (!allCollectionOptions)
         (allCollectionOptions as unknown as CollectionsOptions).media = {}; // default value
@@ -74,7 +70,7 @@ const plugin =
         }
       );
 
-      const config: OurConfig = {
+      const config = {
         ...incomingConfig,
         collections,
       };

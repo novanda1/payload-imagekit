@@ -1,7 +1,6 @@
-import { UploadedFile } from "express-fileupload";
 import ImageKit from "imagekit";
 import { UploadOptions, UploadResponse } from "imagekit/dist/libs/interfaces";
-import { TImageKitConfig, TUploadOption } from "./types";
+import { TImageKitConfig, TUploadOption, TUploadedFile } from "./types";
 
 class Service {
   private config: TImageKitConfig = {
@@ -15,7 +14,7 @@ class Service {
   }
 
   public async upload(
-    file: UploadedFile,
+    file: TUploadedFile,
     options?: TUploadOption
   ): Promise<UploadResponse & {}> {
     const imagekit = new ImageKit({

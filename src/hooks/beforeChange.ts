@@ -22,7 +22,7 @@ export const getBeforeChangeHooks = (
   const service = new Service(config);
   const uploadBeforeChange: BeforeChangeHook =
     async (args) => {
-      const file = args.req.files?.file;
+      const file = args.req?.file;
 
       const uploadOptions = {
         ...(options || {}),

@@ -1,5 +1,5 @@
 import { UploadResponse, UploadOptions } from "imagekit/dist/libs/interfaces";
-import { PayloadRequest } from "payload/types";
+import { PayloadRequest } from "payload";
 
 export type TImageKitProperty = keyof Omit<
   Omit<UploadResponse, "thumbnailUrl">,
@@ -15,6 +15,19 @@ export type CollectionOptions = {
 
 export type CollectionsOptions = {
   [slug: string]: CollectionOptions;
+}
+
+export type TUploadedFile = {
+  clientUploadContext?: unknown;
+  data: Buffer;
+  mimetype: string;
+  name: string;
+  size: number;
+  tempFilePath?: string;
+  mv?: (path: string, callback: (err?: Error) => void) => void;
+  encoding?: string;
+  truncated?: boolean;
+  md5?: string;
 }
 
 export type TPluginOption = {
